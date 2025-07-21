@@ -1,1 +1,53 @@
+name: Synthetic Monitor
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'  # Every 10 minutes
+  workflow_dispatch:
+
+jobs:
+  run-monitor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright Test
+        id: run-test
+        run: |
+          set +e
+          npx playwright test synthetic-monitor/check-app.spec.ts
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+
+      - name: Upload screenshot
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-screenshot
+          path: screenshot.png
+
+      - name: Notify OneUptime (if failed)
+        if: steps.run-test.outputs.exit_code != '0'
+        run: |
+          curl -X POST https://api.oneuptime.com/api/incident \
+            -H "Authorization: Bearer ${{ secrets.ONEUPTIME_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "projectId": "${{ secrets.ONEUPTIME_PROJECT_ID }}",
+              "title": "Semarchy is Down",
+              "description": "Playwright test failed in GitHub Actions.",
+              "incidentSeverity": "critical"
+            }'
 
