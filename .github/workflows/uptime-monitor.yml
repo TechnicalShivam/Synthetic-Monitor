@@ -38,18 +38,6 @@ jobs:
           name: app-screenshot
           path: screenshot.png
 
-      # - name: Notify OneUptime (if failed)
-      #   if: steps.run-test.outputs.exit_code != '0'
-      #   run: |
-      #     curl -X POST http://172.174.152.29/api/incident \
-      #       -H "Authorization: Bearer ${{ secrets.ONEUPTIME_API_TOKEN }}" \
-      #       -H "Content-Type: application/json" \
-      #       -d '{
-      #         "projectId": "${{ secrets.ONEUPTIME_PROJECT_ID }}",
-      #         "title": "Semarchy is Down",
-      #         "description": "Playwright test failed in GitHub Actions.",
-      #         "incidentSeverity": "critical"
-      #       }'
       - name: Notify OneUptime (if failed)
         if: steps.run-test.outputs.exit_code != '0'
         run: |
@@ -57,12 +45,10 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.ONEUPTIME_API_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d @- <<EOF
-      {
-        "projectId": "${{ secrets.ONEUPTIME_PROJECT_ID }}",
-        "title": "Semarchy is Down",
-        "description": "Playwright test failed in GitHub Actions.",
-        "incidentSeverity": "critical"
-      }
-      EOF
-
-
+{
+  "projectId": "${{ secrets.ONEUPTIME_PROJECT_ID }}",
+  "title": "Semarchy is Down",
+  "description": "Playwright test failed in GitHub Actions.",
+  "incidentSeverity": "critical"
+}
+EOF
