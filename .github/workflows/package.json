@@ -1,0 +1,12 @@
+{
+  "name": "synthetic-monitor",
+  "version": "1.0.0",
+  "description": "Synthetic monitoring with Playwright",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "playwright": "^1.43.1"
+  }
+}
