@@ -28,7 +28,7 @@ jobs:
         id: run-test
         run: |
           set +e
-          npx playwright test synthetic-monitor/check-app.spec.ts
+          npx playwright test check-app.spec.ts
           echo "exit_code=$?" >> $GITHUB_OUTPUT
 
       - name: Upload screenshot
