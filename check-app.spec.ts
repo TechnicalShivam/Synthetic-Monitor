@@ -20,7 +20,7 @@ test('Login to GitHub and open a repo', async ({ page }) => {
     // Wait for navigation after login
     await page.waitForURL('**/github.com/**');
 
-    // Navigate to a specific repo (replace with your actual repo URL)
+    // Navigate to a specific repo
     await page.goto('https://github.com/TechnicalShivam/Synthetic-Monitor');
 
     // Expect to see the repo title
