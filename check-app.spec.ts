@@ -29,9 +29,9 @@ test('Login to GitHub and open a repo', async ({ page }) => {
     // Take a screenshot
     await page.screenshot({ path: 'screenshot.png' });
 
-    console.log('✅ GitHub login and repo check passed');
+    console.log('GitHub login and repo check passed');
   } catch (error) {
-    console.error('❌ Test failed:', error);
+    console.error('Test failed:', error);
     await page.screenshot({ path: 'screenshot.png' });
     throw error;
   }
